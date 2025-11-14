@@ -35,18 +35,18 @@ WITH base_query AS(
 1) Base Query: Retrieves core columns from tables
 ---------------------------------------------------------------------------*/
 SELECT
-f.order_number,
-f.product_key,
-f.order_date,
-f.sales_amount,
-f.quantity,
+s.order_number,
+s.product_key,
+s.order_date,
+s.sales_amount,
+s.quantity,
 c.customer_key,
 c.customer_number,
 CONCAT(c.first_name, ' ', c.last_name) AS customer_name,
 DATEDIFF(year, c.birthdate, GETDATE()) age
-FROM gold.fact_sales f
+FROM gold.fact_sales s
 LEFT JOIN gold.dim_customers c
-ON c.customer_key = f.customer_key
+ON c.customer_key = s.customer_key
 WHERE order_date IS NOT NULL)
 
 , customer_aggregation AS (
@@ -103,4 +103,5 @@ END AS avg_order_value,
 CASE WHEN lifespan = 0 THEN total_sales
      ELSE total_sales / lifespan
 END AS avg_monthly_spend
+
 FROM customer_aggregation
