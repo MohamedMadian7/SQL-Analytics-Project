@@ -47,10 +47,10 @@ ORDER BY avg_cost DESC;
 -- What is the total revenue generated for each category?
 SELECT
     p.category,
-    SUM(f.sales_amount) AS total_revenue
-FROM gold.fact_sales f
+    SUM(s.sales_amount) AS total_revenue
+FROM gold.fact_sales s
 LEFT JOIN gold.dim_products p
-    ON p.product_key = f.product_key
+    ON p.product_key = s.product_key
 GROUP BY p.category
 ORDER BY total_revenue DESC;
 
@@ -60,10 +60,10 @@ SELECT
     c.customer_key,
     c.first_name,
     c.last_name,
-    SUM(f.sales_amount) AS total_revenue
-FROM gold.fact_sales f
+    SUM(s.sales_amount) AS total_revenue
+FROM gold.fact_sales s
 LEFT JOIN gold.dim_customers c
-    ON c.customer_key = f.customer_key
+    ON c.customer_key = s.customer_key
 GROUP BY 
     c.customer_key,
     c.first_name,
@@ -74,8 +74,8 @@ ORDER BY total_revenue DESC;
 SELECT
     c.country,
     SUM(f.quantity) AS total_sold_items
-FROM gold.fact_sales f
+FROM gold.fact_sales s
 LEFT JOIN gold.dim_customers c
-    ON c.customer_key = f.customer_key
+    ON c.customer_key = s.customer_key
 GROUP BY c.country
 ORDER BY total_sold_items DESC;
