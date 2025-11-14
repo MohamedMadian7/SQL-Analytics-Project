@@ -34,19 +34,19 @@ WITH base_query AS (
 1) Base Query: Retrieves core columns from fact_sales and dim_products
 ---------------------------------------------------------------------------*/
     SELECT
-	    f.order_number,
-        f.order_date,
-		f.customer_key,
-        f.sales_amount,
-        f.quantity,
+	    s.order_number,
+        s.order_date,
+		s.customer_key,
+        s.sales_amount,
+        s.quantity,
         p.product_key,
         p.product_name,
         p.category,
         p.subcategory,
         p.cost
-    FROM gold.fact_sales f
+    FROM gold.fact_sales s
     LEFT JOIN gold.dim_products p
-        ON f.product_key = p.product_key
+        ON s.product_key = p.product_key
     WHERE order_date IS NOT NULL  -- only consider valid sales dates
 ),
 
@@ -110,5 +110,6 @@ SELECT
 		WHEN lifespan = 0 THEN total_sales
 		ELSE total_sales / lifespan
 	END AS avg_monthly_revenue
+
 
 FROM product_aggregations 
